@@ -1,0 +1,49 @@
+item[3] buffer;     // The buffer is initially empty. 
+semaphore empty;   //  
+semaphore full;
+binary_semaphore mutex; // Initialized to one.
+
+/************** Start of Producer Method *************/
+	
+	...
+
+	void producer() {
+
+	while(true) {
+
+	item = produce();
+
+producerLineNumberOne: wait(empty);
+		       wait(empty);
+
+producerLineNumberTwo: append(item);
+		       signal(mutex);
+
+producerLineNumberThree: signal(full);
+
+	}
+}
+
+/**************  End of Producer Method ******************/
+
+
+
+/**************  Start of Consumer Method ****************/
+
+	void consumer() {
+
+	...
+
+	while (true) {
+
+consumerLineNumberOne: wait(full);
+		       wait(mutex);
+
+consumerNumberLineNumberTwo: item = take();
+			     signal(mutex);
+
+consumerNumberLineNumberThree: signal(empty);
+			       consumer(item);
+
+	}
+}
